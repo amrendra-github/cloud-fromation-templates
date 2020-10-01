@@ -1,0 +1,61 @@
+pipeline{
+
+    agent any
+
+//--------------------------------------------------------------
+
+//Adding trigger to poll git for change for every 2 minutes
+
+//---------------------------------------------------------------
+
+ triggers {
+
+     //poll repo for every 2 minutes for change
+
+     pollSCM('*/2 * * * *')
+
+ }
+
+    //All settings in single place  and easy to manage it
+
+  options {
+
+      buildDiscarder(logRotator(numToKeepStr:'5')) //Keep Only Last 5 Builds and Discard Old Builds
+
+      disableConcurrentBuilds()
+
+  }
+
+    
+
+    stages{
+
+    //checkout the code from Github Repo
+
+    //Configure to make sure the checkout stages the right branch
+
+        stage("Checkout"){
+
+             steps{
+
+                 git 'github code URL'
+
+
+             }
+
+
+
+            }
+
+        stage ("Build"){
+
+            steps{
+
+                sh mvn package"
+
+                
+
+            }
+
+
+        }
